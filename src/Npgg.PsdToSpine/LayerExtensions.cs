@@ -13,8 +13,41 @@ using System.Drawing;
 namespace Npgg.PsdToSpine
 {
     public static class LayerExtensions
-    { 
-        public static Bitmap GetBitmap(this IImageSource imageSource)
+    {
+        public static Bitmap GetBitmap(this IPsdLayer imageSource)
+        {
+            if (imageSource.HasImage)
+                return imageSource.GetLayerImage();
+
+            if (imageSource.Childs.Length == 1)
+                return imageSource.Childs.First().GetLayerImage();
+
+            if (imageSource.Childs.Length > 1)
+                return imageSource.GetGroupImage();
+
+            throw new NotImplementedException();
+        }
+
+        public static Bitmap GetGroupImage(this IPsdLayer imageSource)
+        {
+            var bitmaps = imageSource.Childs.Select(layer => layer.GetBitmap()).Reverse();
+
+            var result = bitmaps.Aggregate((bmp1, bmp2) => MergedBitmaps(bmp1, bmp2));
+            return result;
+        }
+        private static Bitmap MergedBitmaps(Bitmap bmp1, Bitmap bmp2)
+        {
+            Bitmap result = new Bitmap(Math.Max(bmp1.Width, bmp2.Width),
+                                       Math.Max(bmp1.Height, bmp2.Height));
+            using (Graphics g = Graphics.FromImage(result))
+            {
+                g.DrawImage(bmp2, Point.Empty);
+                g.DrawImage(bmp1, Point.Empty);
+            }
+            return result;
+        }
+
+        public static Bitmap GetLayerImage(this IPsdLayer imageSource)
         {
             if (imageSource.HasImage == false)
                 return null;
@@ -46,6 +79,8 @@ namespace Npgg.PsdToSpine
                     bitmap.SetPixel(x / channelCount, y, color);
                 }
             }
+            
+            bitmap.Save( $"debug_{imageSource.Name}.png", ImageFormat.Png);
 
             return bitmap;
         }
