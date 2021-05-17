@@ -30,20 +30,20 @@ namespace Npgg.PsdToSpine
 
         public static Bitmap GetGroupImage(this IPsdLayer imageSource)
         {
-            var bitmaps = imageSource.Childs.Select(layer => layer.GetBitmap()).Reverse();
+            var childs = imageSource.Childs;
+            var top = childs.Min(layer => layer.Top);
+            var left = childs.Min(layer => layer.Left);
 
-            var result = bitmaps.Aggregate((bmp1, bmp2) => MergedBitmaps(bmp1, bmp2));
-            return result;
-        }
-        private static Bitmap MergedBitmaps(Bitmap bmp1, Bitmap bmp2)
-        {
-            Bitmap result = new Bitmap(Math.Max(bmp1.Width, bmp2.Width),
-                                       Math.Max(bmp1.Height, bmp2.Height));
-            using (Graphics g = Graphics.FromImage(result))
+            var width = childs.Max(layer => layer.Right - left);
+            var height = childs.Max(layer => layer.Bottom - top);
+
+            var result = new Bitmap(width, height);
+            using Graphics g = Graphics.FromImage(result);
+            foreach (var layer in childs)
             {
-                g.DrawImage(bmp2, Point.Empty);
-                g.DrawImage(bmp1, Point.Empty);
+                g.DrawImage(layer.GetBitmap(), new Point( layer.Left - left, layer.Top - top) );
             }
+            
             return result;
         }
 
@@ -79,8 +79,6 @@ namespace Npgg.PsdToSpine
                     bitmap.SetPixel(x / channelCount, y, color);
                 }
             }
-            
-            bitmap.Save( $"debug_{imageSource.Name}.png", ImageFormat.Png);
 
             return bitmap;
         }
