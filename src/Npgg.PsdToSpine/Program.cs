@@ -16,14 +16,14 @@ namespace Npgg.PsdToSpine
             string filename = "sample1.psd";
             PsdDocument document = PsdDocument.Create(filename);
 
-
+            var bottom = document.Childs.Max(layer => layer.Top + layer.Height);
 
             var attachments = document.Childs.Reverse().Select(layer => new AttachmentInfo()
             {
                 Height = layer.Height,
                 Width = layer.Width,
-                X = layer.Left,
-                Y = layer.Top,
+                X = layer.Left + (layer.Width / 2) - (document.Width /2),
+                Y = -layer.Top - (layer.Height / 2) + bottom,
                 Name = layer.Name,
                 Path = $"imgs/{layer.Name}",
                 Bitmap = layer.GetBitmap(),
@@ -44,8 +44,10 @@ namespace Npgg.PsdToSpine
                 {
                     Hash = "b1SvfaW5KKe2QFddu2nXQdb/nj0",
                     Spine="3.8.99",
-                    Width = 400,
-                    Height = 500,
+                    Width = 0,
+                    Height = 0,
+                    //Width = document.Width,
+                    //Height = document.Height,
                     Images = string.Empty,
                     Audio = string.Empty,
                 },
