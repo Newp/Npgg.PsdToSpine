@@ -9,11 +9,16 @@ using System.Text;
 
 namespace Npgg.PsdToSpine
 {
-    class Program
+    partial class Program
     {
+        static readonly Encoding encoding = new UTF8Encoding(false);
         static void Main(string[] args)
         {
             string filename = "sample1.psd";
+            string boneMapPath = "boneMap.json";
+
+            var boneMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(boneMapPath, encoding));
+
             PsdDocument document = PsdDocument.Create(filename);
 
             var bottom = document.Childs.Max(layer => layer.Top + layer.Height);
@@ -37,7 +42,19 @@ namespace Npgg.PsdToSpine
 
             var result = new
             {
-                bones = new[] { new { name = "root" } },
+                //bones = 
+                //    
+                //    .Append(new BoneInfo { Name = "root" }),
+
+                bones = new[] { new BoneInfo { Name = "root" } }
+                    .Concat(attachments.Select(attachment => new BoneInfo { 
+                        Name = attachment.Name, 
+                        X = attachment.X, 
+                        Y=attachment.Y, 
+                        Parent = "root"// boneMap.ContainsKey(attachment.Name) ? boneMap[attachment.Name] : "root" 
+                    })
+                ),
+
                 animations = new { animation = new { } },
                 //
                 skeleton = new SkeletonInfo()
@@ -46,16 +63,14 @@ namespace Npgg.PsdToSpine
                     Spine="3.8.99",
                     Width = 0,
                     Height = 0,
-                    //Width = document.Width,
-                    //Height = document.Height,
                     Images = string.Empty,
                     Audio = string.Empty,
                 },
                 slots = attachments.Select(attachment =>new SlotInfo
                 {
-                    Name = attachment .Name,
-                    Attachment = attachment .Path,
-                    Bone = "root",
+                    Name = attachment.Name,
+                    Attachment = attachment.Path,
+                    Bone = "root"
                 }).ToArray(),
 
                 skins = new SkinInfo[]
@@ -75,7 +90,8 @@ namespace Npgg.PsdToSpine
             };
 
             var json = JsonConvert.SerializeObject(result, Formatting.Indented);
-            File.WriteAllText(filename + ".json", json, new UTF8Encoding(false));
+            File.WriteAllText(filename + ".json", json, encoding);
         }
     }
+
 }

@@ -7,8 +7,12 @@ namespace Npgg.PsdToSpine
     {
         [JsonIgnore]
         public string Name { get; set; }
+
         [JsonIgnore]
         public string Path { get; set; }
+
+        [JsonIgnore]
+        public BoneInfo Bone { get; set; }
 
         [JsonIgnore]
         public Bitmap Bitmap { get; set; }
