@@ -51,10 +51,10 @@ namespace Npgg.PsdToSpine
                     Images = string.Empty,
                     Audio = string.Empty,
                 },
-                slots = attachments.Select(layer=>new SlotInfo
+                slots = attachments.Select(attachment =>new SlotInfo
                 {
-                    Name = layer.Path,
-                    Attachment = layer.Path,
+                    Name = attachment .Name,
+                    Attachment = attachment .Path,
                     Bone = "root",
                 }).ToArray(),
 
@@ -64,7 +64,7 @@ namespace Npgg.PsdToSpine
                     {
                         Name ="default",
                         Attachments = attachments.ToDictionary(
-                            attachment=>attachment.Path,
+                            attachment=>attachment.Name,
                             attachment=> new Dictionary<string, AttachmentInfo>()
                             {
                                 { attachment.Path, attachment }
