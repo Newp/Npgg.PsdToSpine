@@ -1,4 +1,5 @@
 {
   "Foot": "Body",
-  "Head": "Body"
+  "Head": "Body",
+  "Eye" :  "Head",
 }

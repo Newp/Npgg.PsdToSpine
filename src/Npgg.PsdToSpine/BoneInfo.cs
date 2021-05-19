@@ -57,15 +57,24 @@ namespace Npgg.PsdToSpine
 
             var result = addedBones
                 .Values
-                .Select(attachment => new BoneInfo
+                .Select(layer => new BoneInfo
                 {
-                    Name = attachment.Name,
-                    X = attachment.X,
-                    Y = attachment.Y,
-                    Parent = boneMap.ContainsKey(attachment.Name) ? boneMap[attachment.Name] : "root",
-                    Transform = "noTranslation",
+                    Name = layer.Name,
+                    X = layer.X,
+                    Y = layer.Y,
+                    Parent = boneMap.ContainsKey(layer.Name) ? boneMap[layer.Name] : "root",
                 })
                 .ToList();
+
+            foreach (var bone in result)
+            {
+                if (bone.Parent == "root") continue;
+
+                var parent = addedBones[bone.Parent];
+
+                bone.X -= parent.X;
+                bone.Y -= parent.Y;
+            }
 
             result.Insert(0, new BoneInfo { Name = "root" });
 
