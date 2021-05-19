@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Npgg.PsdToSpine", "Npgg.PsdToSpine\Npgg.PsdToSpine.csproj", "{4563242B-4172-40CC-BD6E-9D1163B0A77D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Npgg.PsdToSpine", "Npgg.PsdToSpine\Npgg.PsdToSpine.csproj", "{4563242B-4172-40CC-BD6E-9D1163B0A77D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Npgg.PsdToSpine.Tests", "Npgg.PsdToSpine.Tests\Npgg.PsdToSpine.Tests.csproj", "{883AB651-6785-40AE-93D7-2F2E68584000}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{4563242B-4172-40CC-BD6E-9D1163B0A77D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4563242B-4172-40CC-BD6E-9D1163B0A77D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4563242B-4172-40CC-BD6E-9D1163B0A77D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{883AB651-6785-40AE-93D7-2F2E68584000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{883AB651-6785-40AE-93D7-2F2E68584000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{883AB651-6785-40AE-93D7-2F2E68584000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{883AB651-6785-40AE-93D7-2F2E68584000}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

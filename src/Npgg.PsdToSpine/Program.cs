@@ -40,20 +40,11 @@ namespace Npgg.PsdToSpine
                 Console.WriteLine($"{layer.Path}.png saved");
             }
 
+            var bones = BoneInfo.CreateBoneInfos(boneMap, attachments);
+
             var result = new
             {
-                //bones = 
-                //    
-                //    .Append(new BoneInfo { Name = "root" }),
-
-                bones = new[] { new BoneInfo { Name = "root" } }
-                    .Concat(attachments.Select(attachment => new BoneInfo { 
-                        Name = attachment.Name, 
-                        X = attachment.X, 
-                        Y=attachment.Y, 
-                        Parent = "root"// boneMap.ContainsKey(attachment.Name) ? boneMap[attachment.Name] : "root" 
-                    })
-                ),
+                bones,
 
                 animations = new { animation = new { } },
                 //
@@ -70,7 +61,7 @@ namespace Npgg.PsdToSpine
                 {
                     Name = attachment.Name,
                     Attachment = attachment.Path,
-                    Bone = "root"
+                    Bone = attachment.Name//"root"
                 }).ToArray(),
 
                 skins = new SkinInfo[]
