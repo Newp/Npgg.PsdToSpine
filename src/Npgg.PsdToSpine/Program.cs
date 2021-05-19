@@ -23,7 +23,7 @@ namespace Npgg.PsdToSpine
 
             var bottom = document.Childs.Max(layer => layer.Top + layer.Height);
 
-            var attachments = document.Childs.Reverse().Select(layer => new AttachmentInfo()
+            var attachments = document.Childs.Reverse().Select(layer => new LayerInfo()
             {
                 Height = layer.Height,
                 Width = layer.Width,
@@ -73,7 +73,7 @@ namespace Npgg.PsdToSpine
                             attachment=>attachment.Name,
                             attachment=> new Dictionary<string, AttachmentInfo>()
                             {
-                                { attachment.Path, attachment }
+                                { attachment.Path, attachment.GetAttachment() }
                             }
                         )
                     }

@@ -32,42 +32,12 @@ namespace Npgg.PsdToSpine
         public string Transform { get; set; }
 
         
-        public static BoneInfo[] CreateBoneInfos(Dictionary<string ,string> boneMap, IEnumerable<AttachmentInfo> attachmentInfos)
+        public static BoneInfo[] CreateBoneInfos(Dictionary<string ,string> boneMap, IEnumerable<LayerInfo> attachmentInfos)
         {
-            //var addedBones = new Dictionary<string, BoneInfo>(); // 원래는 string 본 이름과 BoneInfo로 할 예정이었다.
-            //addedBones.Add("root", new BoneInfo { Name = "root" });
-            //var queue = new Queue<string>(attachmentInfos.Select(item => item.Name));
 
-            //while (queue.Count > 0)
-            //{
-            //    var attachment = queue.Dequeue();
-            //    if (boneMap.TryGetValue(attachment, out var parentBone) == false)
-            //        parentBone = "root";
+            var addedBones = new Dictionary<string, LayerInfo>(); // 원래는 string 본 이름과 BoneInfo로 할 예정이었다.
 
-            //        addedBones.Add(attachment);
-            //    else
-            //        queue.Enqueue(attachment);
-            //}
-
-            //var result = addedBones
-            //    .Select(name => attachmentInfos.First(attachmentInfo => attachmentInfo.Name == name))
-            //    .Select(attachment => new BoneInfo
-            //    {
-            //        Name = attachment.Name,
-            //        X = attachment.X,
-            //        Y = attachment.Y,
-            //        Parent = boneMap.ContainsKey(attachment.Name) ? boneMap[attachment.Name] : "root",
-            //        //Transform = "onlyTranslation",
-            //    })
-            //    .ToList();
-
-            //result.Insert(0, new BoneInfo { Name = "root" });
-
-            //return result;
-
-            var addedBones = new Dictionary<string, AttachmentInfo>(); // 원래는 string 본 이름과 BoneInfo로 할 예정이었다.
-
-            var queue = new Queue<AttachmentInfo>(attachmentInfos);
+            var queue = new Queue<LayerInfo>(attachmentInfos);
 
             while (queue.Count > 0)
             {
@@ -93,7 +63,7 @@ namespace Npgg.PsdToSpine
                     X = attachment.X,
                     Y = attachment.Y,
                     Parent = boneMap.ContainsKey(attachment.Name) ? boneMap[attachment.Name] : "root",
-                    //Transform = "onlyTranslation",
+                    Transform = "noTranslation",
                 })
                 .ToList();
 
