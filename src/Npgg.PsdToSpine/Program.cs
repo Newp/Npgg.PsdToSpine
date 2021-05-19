@@ -62,7 +62,7 @@ namespace Npgg.PsdToSpine
                     Name = attachment.Name,
                     Attachment = attachment.Path,
                     Bone = attachment.Name//"root"
-                }).ToArray(),
+                }).Reverse(),
 
                 skins = new SkinInfo[]
                 {
