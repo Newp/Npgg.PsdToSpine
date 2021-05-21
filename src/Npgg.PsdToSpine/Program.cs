@@ -12,6 +12,7 @@ namespace Npgg.PsdToSpine
     partial class Program
     {
         static readonly Encoding encoding = new UTF8Encoding(false);
+        static readonly string ImageOuputPath = "imgs";
         static void Main(string[] args)
         {
             string filename = "sample1.psd";
@@ -23,28 +24,32 @@ namespace Npgg.PsdToSpine
 
             var bottom = document.Childs.Max(layer => layer.Top + layer.Height);
 
-            var attachments = document.Childs.Reverse().Select(layer => new LayerInfo()
+            var layers = document.Childs.Reverse().Select(layer => new LayerInfo()
             {
                 Height = layer.Height,
                 Width = layer.Width,
                 X = layer.Left + (layer.Width / 2) - (document.Width /2),
                 Y = -layer.Top - (layer.Height / 2) + bottom,
                 Name = layer.Name,
-                Path = $"imgs/{layer.Name}",
+                Path = $"{ImageOuputPath }/{layer.Name}",
                 Bitmap = layer.GetBitmap(),
             });
 
-            foreach (var layer in attachments)
+
+            if(Directory.Exists(ImageOuputPath) == false)
+            {
+                Directory.CreateDirectory(ImageOuputPath);
+            }
+
+            foreach (var layer in layers)
             {
                 layer.Bitmap.Save($"{layer.Path}.png", ImageFormat.Png);
                 Console.WriteLine($"{layer.Path}.png saved");
             }
 
-            var bones = BoneInfo.CreateBoneInfos(boneMap, attachments);
-
             var result = new
             {
-                bones,
+                bones = BoneInfo.CreateBoneInfos(boneMap, layers),
 
                 animations = new { animation = new { } },
                 //
@@ -57,11 +62,11 @@ namespace Npgg.PsdToSpine
                     Images = string.Empty,
                     Audio = string.Empty,
                 },
-                slots = attachments.Select(attachment =>new SlotInfo
+                slots = layers.Select(layer =>new SlotInfo
                 {
-                    Name = attachment.Name,
-                    Attachment = attachment.Path,
-                    Bone = attachment.Name//"root"
+                    Name = layer.Name,
+                    Attachment = layer.Path,
+                    Bone = layer.Name//"root"
                 }).Reverse(),
 
                 skins = new SkinInfo[]
@@ -69,11 +74,11 @@ namespace Npgg.PsdToSpine
                     new SkinInfo()
                     {
                         Name ="default",
-                        Attachments = attachments.ToDictionary(
-                            attachment=>attachment.Name,
-                            attachment=> new Dictionary<string, AttachmentInfo>()
+                        Attachments = layers.ToDictionary(
+                            layer=>layer.Name,
+                            layer=> new Dictionary<string, AttachmentInfo>()
                             {
-                                { attachment.Path, attachment.GetAttachment() }
+                                { layer.Path, layer.GetAttachment() }
                             }
                         )
                     }
