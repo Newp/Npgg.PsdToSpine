@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Npgg.PsdToSpine": {
+      "commandName": "Project",
+      "commandLineArgs": "sample1.psd"
+    }
+  }
+}

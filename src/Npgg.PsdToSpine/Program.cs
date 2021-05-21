@@ -13,9 +13,10 @@ namespace Npgg.PsdToSpine
     {
         static readonly Encoding encoding = new UTF8Encoding(false);
         static readonly string ImageOuputPath = "imgs";
+
         static void Main(string[] args)
         {
-            string filename = "sample1.psd";
+            string filename = args[0];
             string boneMapPath = "boneMap.json";
 
             var boneMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(boneMapPath, encoding));
