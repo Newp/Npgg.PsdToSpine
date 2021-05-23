@@ -20,15 +20,18 @@ namespace Npgg.PsdToSpineGUI
             InitializeComponent();
         }
 
+        static readonly Encoding encoding = new UTF8Encoding(false);
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+            string filename = "sample1.psd";
             string boneMapPath = "boneMap.json";
 
-            var boneMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(boneMapPath));
-            var result = Npgg.PsdToSpine.Converter.Convert("sample1.psd", boneMap);
+            var boneMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(boneMapPath, encoding));
+            var result = Npgg.PsdToSpine.Converter.Convert(filename, boneMap);
 
-            
+
+            var json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            File.WriteAllText(filename + ".json", json, encoding);
         }
     }
 }

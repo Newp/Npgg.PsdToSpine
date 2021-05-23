@@ -9,19 +9,13 @@ using System.Text;
 
 namespace Npgg.PsdToSpine
 {
-    partial class Program
+    public class Converter
     {
-        static readonly Encoding encoding = new UTF8Encoding(false);
         static readonly string ImageOuputPath = "imgs";
 
-        static void Main(string[] args)
+        public static SpineOption Convert(string fileName, Dictionary<string, string> boneMap)
         {
-            string filename = args[0];
-            string boneMapPath = "boneMap.json";
-
-            var boneMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(boneMapPath, encoding));
-
-            PsdDocument document = PsdDocument.Create(filename);
+            PsdDocument document = PsdDocument.Create(fileName);
 
             var bottom = document.Childs.Max(layer => layer.Top + layer.Height);
 
@@ -86,8 +80,7 @@ namespace Npgg.PsdToSpine
                 }
             };
 
-            var json = JsonConvert.SerializeObject(result, Formatting.Indented);
-            File.WriteAllText(filename + ".json", json, encoding);
+            return result;
         }
     }
 }
