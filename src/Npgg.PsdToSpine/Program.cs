@@ -48,13 +48,13 @@ namespace Npgg.PsdToSpine
                 Console.WriteLine($"{layer.Path}.png saved");
             }
 
-            var result = new
+            var result = new SpineOption
             {
-                bones = BoneInfo.CreateBoneInfos(boneMap, layers),
+                Bones = BoneInfo.CreateBoneInfos(boneMap, layers),
 
-                animations = new { animation = new { } },
+                //Animations = new { animation = new { } },
                 //
-                skeleton = new SkeletonInfo()
+                Skeleton = new SkeletonInfo()
                 {
                     Hash = "b1SvfaW5KKe2QFddu2nXQdb/nj0",
                     Spine="3.8.99",
@@ -63,14 +63,14 @@ namespace Npgg.PsdToSpine
                     Images = string.Empty,
                     Audio = string.Empty,
                 },
-                slots = layers.Select(layer =>new SlotInfo
+                Slots = layers.Select(layer =>new SlotInfo
                 {
                     Name = layer.Name,
                     Attachment = layer.Path,
                     Bone = layer.Name//"root"
-                }).Reverse(),
+                }).Reverse().ToArray(),
 
-                skins = new SkinInfo[]
+                Skins = new SkinInfo[]
                 {
                     new SkinInfo()
                     {
@@ -90,5 +90,4 @@ namespace Npgg.PsdToSpine
             File.WriteAllText(filename + ".json", json, encoding);
         }
     }
-
 }
