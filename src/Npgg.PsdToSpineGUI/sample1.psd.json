@@ -1,0 +1,101 @@
+{
+  "bones": [
+    {
+      "name": "root"
+    },
+    {
+      "name": "Body",
+      "parent": "root",
+      "x": 169.0,
+      "y": 263.0
+    },
+    {
+      "name": "Foot",
+      "parent": "Body",
+      "x": -192.0,
+      "y": -204.0
+    },
+    {
+      "name": "Head",
+      "parent": "Body",
+      "x": -192.0,
+      "y": 204.0
+    },
+    {
+      "name": "Eye",
+      "parent": "Head",
+      "y": -4.0
+    }
+  ],
+  "skeleton": {
+    "hash": "b1SvfaW5KKe2QFddu2nXQdb/nj0",
+    "spine": "3.8.99",
+    "x": 0.0,
+    "y": 0.0,
+    "width": 0.0,
+    "height": 0.0,
+    "images": "",
+    "audio": ""
+  },
+  "slots": [
+    {
+      "name": "Foot",
+      "bone": "Foot",
+      "attachment": "imgs/Foot"
+    },
+    {
+      "name": "Body",
+      "bone": "Body",
+      "attachment": "imgs/Body"
+    },
+    {
+      "name": "Head",
+      "bone": "Head",
+      "attachment": "imgs/Head"
+    },
+    {
+      "name": "Eye",
+      "bone": "Eye",
+      "attachment": "imgs/Eye"
+    }
+  ],
+  "skins": [
+    {
+      "name": "default",
+      "attachments": {
+        "Eye": {
+          "imgs/Eye": {
+            "x": 0,
+            "y": 0,
+            "width": 374,
+            "height": 205
+          }
+        },
+        "Head": {
+          "imgs/Head": {
+            "x": 0,
+            "y": 0,
+            "width": 298,
+            "height": 118
+          }
+        },
+        "Body": {
+          "imgs/Body": {
+            "x": 0,
+            "y": 0,
+            "width": 86,
+            "height": 290
+          }
+        },
+        "Foot": {
+          "imgs/Foot": {
+            "x": 0,
+            "y": 0,
+            "width": 298,
+            "height": 118
+          }
+        }
+      }
+    }
+  ]
+}

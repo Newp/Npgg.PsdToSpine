@@ -23,8 +23,38 @@ namespace Npgg.PsdToSpineGUI
         static readonly Encoding encoding = new UTF8Encoding(false);
         private void MainForm_Load(object sender, EventArgs e)
         {
-            string filename = "sample1.psd";
-            string boneMapPath = "boneMap.json";
+        }
+
+        private void FileSelectButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+
+            var dialogResult = dialog.ShowDialog(this);
+
+            if (dialogResult != DialogResult.OK)
+                return;
+
+            PsdFileLabel.Text = dialog.FileName;
+
+        }
+
+        private void BoneMapSelectButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+
+            var dialogResult = dialog.ShowDialog(this);
+
+            if (dialogResult != DialogResult.OK)
+                return;
+
+            BoneMapLabel.Text = dialog.FileName;
+        }
+
+
+        private void ConvertButton_Click(object sender, EventArgs e)
+        {
+            string filename = this.PsdFileLabel.Text;
+            string boneMapPath = this.BoneMapLabel.Text;
 
             var boneMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(boneMapPath, encoding));
             var result = Npgg.PsdToSpine.Converter.Convert(filename, boneMap);
