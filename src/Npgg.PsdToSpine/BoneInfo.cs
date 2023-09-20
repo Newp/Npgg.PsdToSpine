@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,26 +35,7 @@ namespace Npgg.PsdToSpine
         
         public static BoneInfo[] CreateBoneInfos(Dictionary<string ,string> boneMap, IEnumerable<LayerInfo> attachmentInfos)
         {
-
-            var addedBones = new Dictionary<string, LayerInfo>(); // 원래는 string 본 이름과 BoneInfo로 할 예정이었다.
-
-            var queue = new Queue<LayerInfo>(attachmentInfos);
-
-            while (queue.Count > 0)
-            {
-                var attachment = queue.Dequeue();
-
-                if (boneMap.TryGetValue(attachment.Name, out var parentBone) == false)
-                {
-                    addedBones.Add(attachment.Name, attachment);
-                    continue;
-                }
-                
-                if(addedBones.ContainsKey(parentBone))
-                    addedBones.Add(attachment.Name, attachment);
-                else
-                    queue.Enqueue(attachment);
-            }
+            var addedBones = attachmentInfos.Where(item => boneMap.ContainsKey(item.Name)).ToDictionary(item => item.Name);
 
             var result = addedBones
                 .Values
