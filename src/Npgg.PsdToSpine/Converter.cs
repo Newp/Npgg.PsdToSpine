@@ -47,14 +47,15 @@ namespace Npgg.PsdToSpine
 
             var result = new SpineOption
             {
-                Bones = BoneInfo.CreateBoneInfos(boneMap, layers),
+                Bones = new BoneInfo[] { new BoneInfo() { Name = "root" } },
+            //BoneInfo.CreateBoneInfos(boneMap, layers),
 
                 //Animations = new { animation = new { } },
                 //
                 Skeleton = new SkeletonInfo()
                 {
                     Hash = "b1SvfaW5KKe2QFddu2nXQdb/nj0",
-                    Spine="3.8.99",
+                    Spine="4.1.23",
                     Width = 0,
                     Height = 0,
                     Images = string.Empty,
@@ -64,7 +65,7 @@ namespace Npgg.PsdToSpine
                 {
                     Name = layer.Name,
                     Attachment = layer.Path,
-                    Bone = layer.Name//"root"
+                    Bone = "root"// layer.Name//"root"
                 }).Reverse().ToArray(),
 
                 Skins = new SkinInfo[]

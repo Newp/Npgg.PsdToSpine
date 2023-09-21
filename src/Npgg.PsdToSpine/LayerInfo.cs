@@ -23,8 +23,8 @@ namespace Npgg.PsdToSpine
 
         public AttachmentInfo GetAttachment() => new AttachmentInfo()
         {
-            X = 0,//this.X,
-            Y = 0,//this.Y,
+            X = this.X,
+            Y = this.Y,
             Height = this.Height,
             Width = this.Width,
         };
