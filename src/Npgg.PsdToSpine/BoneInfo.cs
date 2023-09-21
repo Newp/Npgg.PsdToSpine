@@ -6,6 +6,12 @@ using System.Linq;
 namespace Npgg.PsdToSpine
 {
  
+    public class BoneMap
+    {
+        public string Name { get; set; }
+        public string Parent { get; set; }
+    }
+
     public class BoneInfo
     {
 
@@ -33,9 +39,10 @@ namespace Npgg.PsdToSpine
         public string Transform { get; set; }
 
         
-        public static BoneInfo[] CreateBoneInfos(Dictionary<string ,string> boneMap, IEnumerable<LayerInfo> attachmentInfos)
+        public static BoneInfo[] CreateBoneInfos(BoneMap[] boneMap, IEnumerable<LayerInfo> attachmentInfos)
         {
-            var addedBones = attachmentInfos.Where(item => boneMap.ContainsKey(item.Name)).ToDictionary(item => item.Name);
+            var parentMap = boneMap.ToDictionary(item => item.Name, item => item.Parent);
+            var addedBones = boneMap.ToDictionary(item => item.Name, item => attachmentInfos.Single(a => a.Name == item.Name));
 
             var result = addedBones
                 .Values
@@ -44,7 +51,8 @@ namespace Npgg.PsdToSpine
                     Name = layer.Name,
                     X = layer.X,
                     Y = layer.Y,
-                    Parent = boneMap.ContainsKey(layer.Name) ? boneMap[layer.Name] : "root",
+                    Length= 100,
+                    Parent = parentMap.ContainsKey(layer.Name) ? parentMap[layer.Name] : "root",
                 })
                 .ToList();
 

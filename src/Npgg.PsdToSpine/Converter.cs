@@ -13,7 +13,7 @@ namespace Npgg.PsdToSpine
     {
         static readonly string ImageOuputPath = "imgs";
 
-        public static SpineOption Convert(string fileName, Dictionary<string, string> boneMap)
+        public static SpineOption Convert(string fileName, BoneMap[] boneMap)
         {
             var groupName = "정면";
             PsdDocument document = PsdDocument.Create(fileName);

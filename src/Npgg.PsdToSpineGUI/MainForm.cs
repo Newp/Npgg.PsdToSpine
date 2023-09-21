@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Npgg.PsdToSpine;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,8 +24,8 @@ namespace Npgg.PsdToSpineGUI
         static readonly Encoding encoding = new UTF8Encoding(false);
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.PsdFileLabel.Text = "G:/내 드라이브/00384-1291741797.psd";
-            this.BoneMapLabel.Text = "G:/내 드라이브/00384-1291741797_bonemap.json";
+            this.PsdFileLabel.Text = "G:/내 드라이브/기본케릭터/character1.psd";
+            this.BoneMapLabel.Text = "G:/내 드라이브/기본케릭터/character1_bonemap.json";
         }
 
         private void FileSelectButton_Click(object sender, EventArgs e)
@@ -57,10 +58,8 @@ namespace Npgg.PsdToSpineGUI
         {
             string filename = this.PsdFileLabel.Text;
             string boneMapPath = this.BoneMapLabel.Text;
-
-            var boneMap =
-                File.Exists(boneMapPath) == false ? new ():
-                JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(boneMapPath, encoding));
+            var xx = File.ReadAllText(boneMapPath, encoding);
+            var boneMap = JsonConvert.DeserializeObject<BoneMap[]>(xx);
 
             var result = Npgg.PsdToSpine.Converter.Convert(filename, boneMap);
 
