@@ -25,7 +25,7 @@ namespace Npgg.PsdToSpineGUI
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.PsdFileLabel.Text = "G:/내 드라이브/기본케릭터/character1.psd";
-            this.BoneMapLabel.Text = "G:/내 드라이브/기본케릭터/character1_bonemap.json";
+            this.BoneMapLabel.Text = "G:/내 드라이브/기본케릭터/character1_config.json";
         }
 
         private void FileSelectButton_Click(object sender, EventArgs e)
@@ -59,15 +59,19 @@ namespace Npgg.PsdToSpineGUI
             string filename = this.PsdFileLabel.Text;
             string boneMapPath = this.BoneMapLabel.Text;
             var xx = File.ReadAllText(boneMapPath, encoding);
-            var boneMap = JsonConvert.DeserializeObject<BoneMap[]>(xx);
+            var config = JsonConvert.DeserializeObject<Configuration>(xx);
 
-            var result = Npgg.PsdToSpine.Converter.Convert(filename, boneMap);
+            FileInfo file = new FileInfo(filename);
 
+            var result = Npgg.PsdToSpine.Converter.Convert(filename, config, file.Directory.FullName);
 
+            
             var json = JsonConvert.SerializeObject(result, Formatting.Indented);
             File.WriteAllText(filename + ".json", json, encoding);
 
             MessageBox.Show("완료");
         }
     }
+
 }
+
