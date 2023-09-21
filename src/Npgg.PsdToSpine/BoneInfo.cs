@@ -1,10 +1,17 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Npgg.PsdToSpine
 {
  
+    public class BoneMap
+    {
+        public string Name { get; set; }
+        public string Parent { get; set; }
+    }
+
     public class BoneInfo
     {
 
@@ -32,28 +39,10 @@ namespace Npgg.PsdToSpine
         public string Transform { get; set; }
 
         
-        public static BoneInfo[] CreateBoneInfos(Dictionary<string ,string> boneMap, IEnumerable<LayerInfo> attachmentInfos)
+        public static BoneInfo[] CreateBoneInfos(BoneMap[] boneMap, IEnumerable<LayerInfo> attachmentInfos)
         {
-
-            var addedBones = new Dictionary<string, LayerInfo>(); // 원래는 string 본 이름과 BoneInfo로 할 예정이었다.
-
-            var queue = new Queue<LayerInfo>(attachmentInfos);
-
-            while (queue.Count > 0)
-            {
-                var attachment = queue.Dequeue();
-
-                if (boneMap.TryGetValue(attachment.Name, out var parentBone) == false)
-                {
-                    addedBones.Add(attachment.Name, attachment);
-                    continue;
-                }
-                
-                if(addedBones.ContainsKey(parentBone))
-                    addedBones.Add(attachment.Name, attachment);
-                else
-                    queue.Enqueue(attachment);
-            }
+            var parentMap = boneMap.ToDictionary(item => item.Name, item => item.Parent);
+            var addedBones = boneMap.ToDictionary(item => item.Name, item => attachmentInfos.Single(a => a.Name == item.Name));
 
             var result = addedBones
                 .Values
@@ -62,7 +51,8 @@ namespace Npgg.PsdToSpine
                     Name = layer.Name,
                     X = layer.X,
                     Y = layer.Y,
-                    Parent = boneMap.ContainsKey(layer.Name) ? boneMap[layer.Name] : "root",
+                    Length= 100,
+                    Parent = parentMap.ContainsKey(layer.Name) ? parentMap[layer.Name] : "root",
                 })
                 .ToList();
 

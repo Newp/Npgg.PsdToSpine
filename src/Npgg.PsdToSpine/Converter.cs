@@ -13,13 +13,16 @@ namespace Npgg.PsdToSpine
     {
         static readonly string ImageOuputPath = "imgs";
 
-        public static SpineOption Convert(string fileName, Dictionary<string, string> boneMap)
+        public static SpineOption Convert(string fileName, BoneMap[] boneMap)
         {
+            var groupName = "정면";
             PsdDocument document = PsdDocument.Create(fileName);
 
-            var bottom = document.Childs.Max(layer => layer.Top + layer.Height);
+            var group = document.Childs.Single(child => child.Name == groupName);
 
-            var layers = document.Childs.Reverse().Select(layer => new LayerInfo()
+            var bottom = group.Childs.Max(layer => layer.Top + layer.Height);
+            
+            var layers = group.Childs.Reverse().Select(layer => new LayerInfo()
             {
                 Height = layer.Height,
                 Width = layer.Width,
@@ -28,7 +31,7 @@ namespace Npgg.PsdToSpine
                 Name = layer.Name,
                 Path = $"{ImageOuputPath }/{layer.Name}",
                 Bitmap = layer.GetBitmap(),
-            });
+            }).ToArray();
 
 
             if(Directory.Exists(ImageOuputPath) == false)
